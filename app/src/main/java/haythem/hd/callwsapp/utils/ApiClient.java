@@ -9,17 +9,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
 
-    private static Retrofit retrofit = null;
+    private static Retrofit mRetrofit = null;
 
 
     public static Retrofit getClient() {
-        if (retrofit == null) {
-            retrofit = new Retrofit.Builder()
+        if (mRetrofit == null) {
+            mRetrofit = new Retrofit.Builder()
                     .baseUrl(Constantes.URL_WS)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
-        return retrofit;
+        return mRetrofit;
     }
 }
 

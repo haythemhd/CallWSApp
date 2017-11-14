@@ -22,7 +22,7 @@ public class CallWithRetrofitActivity extends AppCompatActivity implements PostA
 
     private RecyclerView mRecycleView;
     private ArrayList<Post> mPostList = new ArrayList<>();
-    private PostAdapter postAdapter;
+    private PostAdapter mPostAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +34,8 @@ public class CallWithRetrofitActivity extends AppCompatActivity implements PostA
 
         getSupportActionBar().setTitle("Posts With Retrofit");
 
-        postAdapter = new PostAdapter(mPostList, this);
-        mRecycleView.setAdapter(postAdapter);
+        mPostAdapter = new PostAdapter(mPostList, this);
+        mRecycleView.setAdapter(mPostAdapter);
 
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
@@ -45,7 +45,7 @@ public class CallWithRetrofitActivity extends AppCompatActivity implements PostA
             @Override
             public void onResponse(Call<ArrayList<Post>> call, Response<ArrayList<Post>> response) {
                 mPostList.addAll(response.body());
-                postAdapter.notifyDataSetChanged();
+                mPostAdapter.notifyDataSetChanged();
             }
 
             @Override

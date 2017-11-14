@@ -11,11 +11,9 @@ import java.util.ArrayList;
 import haythem.hd.callwsapp.R;
 import haythem.hd.callwsapp.model.Post;
 
-/**
- * Created by Haythem on 09/11/2017.
- */
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> {
+
     private ArrayList<Post> mDataPost;
     private OnItemClickListener listener = null;
 
@@ -39,7 +37,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         holder.title.setText(post.getmTitle());
         holder.body.setText(post.getmBody());
         holder.bind(position, listener);
-
     }
 
     @Override

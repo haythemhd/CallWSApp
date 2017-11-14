@@ -27,8 +27,7 @@ public class CallWithThreadActivity extends AppCompatActivity implements PostAda
     private RecyclerView mRecycleView;
     private ArrayList<Post> mPostList = new ArrayList<>();
     private Handler mHandler;
-    private PostAdapter postAdapter;
-    private PostAdapter.OnItemClickListener onItemClickListener;
+    private PostAdapter mPostAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +39,8 @@ public class CallWithThreadActivity extends AppCompatActivity implements PostAda
 
         getSupportActionBar().setTitle("Posts With Thread");
 
-        postAdapter = new PostAdapter(mPostList, this);
-        mRecycleView.setAdapter(postAdapter);
+        mPostAdapter = new PostAdapter(mPostList, this);
+        mRecycleView.setAdapter(mPostAdapter);
 
 
         Thread thread = new Thread(new Runnable() {
@@ -91,7 +90,7 @@ public class CallWithThreadActivity extends AppCompatActivity implements PostAda
         mHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
-                postAdapter.notifyDataSetChanged();
+                mPostAdapter.notifyDataSetChanged();
                 return true;
             }
         });

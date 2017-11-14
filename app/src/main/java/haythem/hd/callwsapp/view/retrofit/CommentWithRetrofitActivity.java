@@ -22,7 +22,7 @@ public class CommentWithRetrofitActivity extends AppCompatActivity {
     private int idPost;
     private RecyclerView mRecycleView;
     private ArrayList<Comment> mCommentList = new ArrayList<>();
-    private CommentAdapter commentAdapter;
+    private CommentAdapter mCommentAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +34,8 @@ public class CommentWithRetrofitActivity extends AppCompatActivity {
 
         mRecycleView = findViewById(R.id.recycleview_post);
         mRecycleView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        commentAdapter = new CommentAdapter(mCommentList);
-        mRecycleView.setAdapter(commentAdapter);
+        mCommentAdapter = new CommentAdapter(mCommentList);
+        mRecycleView.setAdapter(mCommentAdapter);
 
 
         ApiInterface apiService =
@@ -46,7 +46,7 @@ public class CommentWithRetrofitActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ArrayList<Comment>> call, Response<ArrayList<Comment>> response) {
                 mCommentList.addAll(response.body());
-                commentAdapter.notifyDataSetChanged();
+                mCommentAdapter.notifyDataSetChanged();
             }
 
             @Override

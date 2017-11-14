@@ -10,5 +10,4 @@ public class Constantes {
     public static final String URL_WS = "https://jsonplaceholder.typicode.com/";
     public static final String URL_WS_COMMENT = "https://jsonplaceholder.typicode.com/comments?postId=";
     public static final String KEY_ID_POST = "key_id_post";
-
 }

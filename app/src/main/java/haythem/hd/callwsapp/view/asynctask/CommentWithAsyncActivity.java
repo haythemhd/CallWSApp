@@ -25,7 +25,7 @@ public class CommentWithAsyncActivity extends AppCompatActivity {
     private int idPost;
     private RecyclerView mRecycleView;
     private ArrayList<Comment> mCommentList = new ArrayList<>();
-    private CommentAdapter commentAdapter;
+    private CommentAdapter mCommentAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +37,8 @@ public class CommentWithAsyncActivity extends AppCompatActivity {
 
         mRecycleView = findViewById(R.id.recycleview_post);
         mRecycleView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        commentAdapter = new CommentAdapter(mCommentList);
-        mRecycleView.setAdapter(commentAdapter);
+        mCommentAdapter = new CommentAdapter(mCommentList);
+        mRecycleView.setAdapter(mCommentAdapter);
 
         CommentAsync commentAsync = new CommentAsync();
         commentAsync.execute();
@@ -94,7 +94,7 @@ public class CommentWithAsyncActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Void result) {
-            commentAdapter.notifyDataSetChanged();
+            mCommentAdapter.notifyDataSetChanged();
         }
     }
 

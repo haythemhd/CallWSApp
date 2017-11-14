@@ -19,7 +19,7 @@ public class Comment {
     @SerializedName("email")
     private String mEmail;
 
-    @SerializedName("post")
+    @SerializedName("body")
     private String mBody;
 
 

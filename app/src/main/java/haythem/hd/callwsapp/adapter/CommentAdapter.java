@@ -32,10 +32,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Comment comment = mDataComment.get(position);
-        holder.id.setText(String.valueOf(comment.getmPostId()));
+        holder.mId.setText(String.valueOf(comment.getmPostId()));
         String title = comment.getmName() + " (" + comment.getmEmail() + ") " + comment.getmId();
-        holder.title.setText(title);
-        holder.body.setText(comment.getmBody());
+        holder.mTitle.setText(title);
+        holder.mBody.setText(comment.getmBody());
     }
 
     @Override
@@ -44,13 +44,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView id, title, body;
+        public TextView mId, mTitle, mBody;
 
         public MyViewHolder(View view) {
             super(view);
-            id = view.findViewById(R.id.id);
-            title = view.findViewById(R.id.title);
-            body = view.findViewById(R.id.body);
+            mId = view.findViewById(R.id.id);
+            mTitle = view.findViewById(R.id.title);
+            mBody = view.findViewById(R.id.body);
         }
     }
 

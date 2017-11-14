@@ -24,7 +24,7 @@ import haythem.hd.callwsapp.utils.HttpHandler;
 public class CallWithAsyncActivity extends AppCompatActivity implements PostAdapter.OnItemClickListener {
     private RecyclerView mRecycleView;
     private ArrayList<Post> mPostList = new ArrayList<>();
-    private PostAdapter postAdapter;
+    private PostAdapter mPostAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +37,8 @@ public class CallWithAsyncActivity extends AppCompatActivity implements PostAdap
 
         getSupportActionBar().setTitle("Posts With AsyncTask");
 
-        postAdapter = new PostAdapter(mPostList,this);
-        mRecycleView.setAdapter(postAdapter);
+        mPostAdapter = new PostAdapter(mPostList,this);
+        mRecycleView.setAdapter(mPostAdapter);
 
 
         PostAsync postAsync=new PostAsync();
@@ -90,7 +90,7 @@ public class CallWithAsyncActivity extends AppCompatActivity implements PostAdap
 
         @Override
         protected void onPostExecute(Void result) {
-            postAdapter.notifyDataSetChanged();
+            mPostAdapter.notifyDataSetChanged();
         }
     }
 

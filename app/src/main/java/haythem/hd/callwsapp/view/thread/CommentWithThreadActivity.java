@@ -27,7 +27,7 @@ public class CommentWithThreadActivity extends AppCompatActivity {
     private RecyclerView mRecycleView;
     private ArrayList<Comment> mCommentList = new ArrayList<>();
     private Handler mHandler;
-    private CommentAdapter commentAdapter;
+    private CommentAdapter mCommentAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +37,8 @@ public class CommentWithThreadActivity extends AppCompatActivity {
 
         mRecycleView = findViewById(R.id.recycleview_post);
         mRecycleView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        commentAdapter = new CommentAdapter(mCommentList);
-        mRecycleView.setAdapter(commentAdapter);
+        mCommentAdapter = new CommentAdapter(mCommentList);
+        mRecycleView.setAdapter(mCommentAdapter);
 
         getSupportActionBar().setTitle("Comments");
 
@@ -90,7 +90,7 @@ public class CommentWithThreadActivity extends AppCompatActivity {
         mHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
-                commentAdapter.notifyDataSetChanged();
+                mCommentAdapter.notifyDataSetChanged();
                 return true;
             }
         });
