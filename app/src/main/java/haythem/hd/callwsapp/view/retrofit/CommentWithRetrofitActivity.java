@@ -19,7 +19,7 @@ import retrofit2.Response;
 
 
 public class CommentWithRetrofitActivity extends AppCompatActivity {
-    private int idPost;
+    private int mIdPost;
     private RecyclerView mRecycleView;
     private ArrayList<Comment> mCommentList = new ArrayList<>();
     private CommentAdapter mCommentAdapter;
@@ -28,7 +28,7 @@ public class CommentWithRetrofitActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posts_comment);
-        idPost = getIntent().getIntExtra(Constantes.KEY_ID_POST, 0);
+        mIdPost = getIntent().getIntExtra(Constantes.KEY_ID_POST, 0);
 
         getSupportActionBar().setTitle("Comment With Retrofit");
 
@@ -37,11 +37,10 @@ public class CommentWithRetrofitActivity extends AppCompatActivity {
         mCommentAdapter = new CommentAdapter(mCommentList);
         mRecycleView.setAdapter(mCommentAdapter);
 
-
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
 
-        Call<ArrayList<Comment>> call = apiService.getCommentById(idPost);
+        Call<ArrayList<Comment>> call = apiService.getCommentById(mIdPost);
         call.enqueue(new Callback<ArrayList<Comment>>() {
             @Override
             public void onResponse(Call<ArrayList<Comment>> call, Response<ArrayList<Comment>> response) {
@@ -56,6 +55,4 @@ public class CommentWithRetrofitActivity extends AppCompatActivity {
 
         });
     }
-
-
 }

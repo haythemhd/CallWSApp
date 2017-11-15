@@ -7,11 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -19,11 +14,11 @@ import haythem.hd.callwsapp.R;
 import haythem.hd.callwsapp.adapter.CommentAdapter;
 import haythem.hd.callwsapp.model.Comment;
 import haythem.hd.callwsapp.utils.Constantes;
-import haythem.hd.callwsapp.utils.HttpHandler;
+import haythem.hd.callwsapp.view.asynctask.CommentListener;
 
 
-public class CommentWithThreadActivity extends AppCompatActivity {
-    private int idPost;
+public class CommentWithThreadActivity extends AppCompatActivity implements CommentListener {
+    private int mIdPost;
     private RecyclerView mRecycleView;
     private ArrayList<Comment> mCommentList = new ArrayList<>();
     private Handler mHandler;
@@ -33,7 +28,7 @@ public class CommentWithThreadActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posts_comment);
-        idPost = getIntent().getIntExtra(Constantes.KEY_ID_POST, 0);
+        mIdPost = getIntent().getIntExtra(Constantes.KEY_ID_POST, 0);
 
         mRecycleView = findViewById(R.id.recycleview_post);
         mRecycleView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -42,60 +37,33 @@ public class CommentWithThreadActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Comments");
 
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                HttpHandler sh = new HttpHandler();
-                String jsonStr = sh.makeServiceCall(Constantes.URL_WS_COMMENT + idPost);
-                if (jsonStr != null) {
-                    try {
-                        JSONArray posts = new JSONArray(jsonStr);
-
-                        for (int i = 0; i < posts.length(); i++) {
-                            JSONObject jsonPostObject = posts.getJSONObject(i);
-
-                            int postId = jsonPostObject.getInt("postId");
-                            int id = jsonPostObject.getInt("id");
-                            String name = jsonPostObject.getString("name");
-                            String email = jsonPostObject.getString("email");
-                            String body = jsonPostObject.getString("body");
-
-                            Comment comment = new Comment(postId, id, name, email, body);
-
-                            mCommentList.add(comment);
-
-                        }
-                    } catch (final JSONException e) {
-                        Log.e("", "Json parsing error: " + e.getMessage());
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(getApplicationContext(),
-                                        "Json parsing error: " + e.getMessage(),
-                                        Toast.LENGTH_LONG)
-                                        .show();
-                            }
-                        });
-                    }
-
-                    Message msg = new Message();
-                    msg.obj = Constantes.LOG_WEB_SERVICE;
-                    mHandler.sendMessage(msg);
-                }
-            }
-        });
-
-        thread.start();
-
         mHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
-                mCommentAdapter.notifyDataSetChanged();
-                return true;
+                Object list = (ArrayList<Object>) msg.obj;
+                if (list instanceof Exception) {
+                    onFail((Exception) msg.obj);
+                } else {
+                    onSuccess((ArrayList<Comment>) list);
+                    //mPostAdapter.notifyDataSetChanged();
+                }                return true;
             }
         });
 
+        CommentThread commentThread = new CommentThread(mHandler,mIdPost);
+
+        commentThread.start();
     }
 
 
+    @Override
+    public void onSuccess(ArrayList<Comment> comments) {
+        mCommentAdapter.onResult(comments);
+
+    }
+
+    @Override
+    public void onFail(Exception e) {
+        Log.i(Constantes.LOG,"Erreur");
+    }
 }

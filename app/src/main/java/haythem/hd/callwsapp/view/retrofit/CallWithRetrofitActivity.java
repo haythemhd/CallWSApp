@@ -41,6 +41,7 @@ public class CallWithRetrofitActivity extends AppCompatActivity implements PostA
                 ApiClient.getClient().create(ApiInterface.class);
 
         Call<ArrayList<Post>> call = apiService.getPosts();
+        call.cancel();
         call.enqueue(new Callback<ArrayList<Post>>() {
             @Override
             public void onResponse(Call<ArrayList<Post>> call, Response<ArrayList<Post>> response) {
@@ -50,13 +51,17 @@ public class CallWithRetrofitActivity extends AppCompatActivity implements PostA
 
             @Override
             public void onFailure(Call<ArrayList<Post>> call, Throwable t) {
-
+               // call.isCanceled()
             }
 
         });
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
     @Override
     public void onItemClick(int position) {

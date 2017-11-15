@@ -8,11 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -20,9 +15,9 @@ import haythem.hd.callwsapp.R;
 import haythem.hd.callwsapp.adapter.PostAdapter;
 import haythem.hd.callwsapp.model.Post;
 import haythem.hd.callwsapp.utils.Constantes;
-import haythem.hd.callwsapp.utils.HttpHandler;
+import haythem.hd.callwsapp.view.asynctask.PostListener;
 
-public class CallWithThreadActivity extends AppCompatActivity implements PostAdapter.OnItemClickListener {
+public class CallWithThreadActivity extends AppCompatActivity implements PostAdapter.OnItemClickListener,PostListener {
 
     private RecyclerView mRecycleView;
     private ArrayList<Post> mPostList = new ArrayList<>();
@@ -42,58 +37,24 @@ public class CallWithThreadActivity extends AppCompatActivity implements PostAda
         mPostAdapter = new PostAdapter(mPostList, this);
         mRecycleView.setAdapter(mPostAdapter);
 
-
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                HttpHandler sh = new HttpHandler();
-                String jsonStr = sh.makeServiceCall(Constantes.URL_WS_POST);
-                if (jsonStr != null) {
-                    try {
-                        JSONArray posts = new JSONArray(jsonStr);
-
-                        for (int i = 0; i < posts.length(); i++) {
-                            JSONObject jsonPostObject = posts.getJSONObject(i);
-
-                            int id = jsonPostObject.getInt("id");
-                            String title = jsonPostObject.getString("title");
-                            String body = jsonPostObject.getString("body");
-                            int userId = jsonPostObject.getInt("userId");
-
-                            Post post = new Post(id, title, body, userId);
-
-                            mPostList.add(post);
-
-                        }
-                    } catch (final JSONException e) {
-                        Log.e("", "Json parsing error: " + e.getMessage());
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(getApplicationContext(),
-                                        "Json parsing error: " + e.getMessage(),
-                                        Toast.LENGTH_LONG)
-                                        .show();
-                            }
-                        });
-                    }
-
-                    Message msg = new Message();
-                    msg.obj = Constantes.LOG_WEB_SERVICE;
-                    mHandler.sendMessage(msg);
-                }
-            }
-        });
-
-        thread.start();
-
         mHandler = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
-                mPostAdapter.notifyDataSetChanged();
-                return true;
+                Object list = (ArrayList<Object>) msg.obj;
+                if (list instanceof Exception) {
+                    onFail((Exception) msg.obj);
+                } else {
+                    onSuccess((ArrayList<Post>) list);
+                    //mPostAdapter.notifyDataSetChanged();
+                }                return true;
             }
         });
+
+        PostThread postThread = new PostThread(mHandler);
+
+        postThread.start();
+
+
 
     }
 
@@ -102,5 +63,15 @@ public class CallWithThreadActivity extends AppCompatActivity implements PostAda
         Intent in = new Intent(this, CommentWithThreadActivity.class);
         in.putExtra(Constantes.KEY_ID_POST, position + 1);
         startActivity(in);
+    }
+
+    @Override
+    public void onSuccess(ArrayList<Post> posts) {
+        mPostAdapter.onResult(posts);
+    }
+
+    @Override
+    public void onFail(Exception e) {
+        Log.i(Constantes.LOG,"Erreur");
     }
 }

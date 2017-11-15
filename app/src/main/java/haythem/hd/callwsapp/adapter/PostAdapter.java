@@ -15,11 +15,17 @@ import haythem.hd.callwsapp.model.Post;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> {
 
     private ArrayList<Post> mDataPost;
-    private OnItemClickListener listener = null;
+    private OnItemClickListener onItemClickListener = null;
 
     public PostAdapter(ArrayList<Post> myDataset, OnItemClickListener listener) {
         mDataPost = myDataset;
-        this.listener = listener;
+        this.onItemClickListener = listener;
+    }
+
+
+    public void onResult(ArrayList<Post> posts){
+        mDataPost = posts;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -33,10 +39,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Post post = mDataPost.get(position);
-        holder.id.setText(String.valueOf(post.getmId()));
-        holder.title.setText(post.getmTitle());
-        holder.body.setText(post.getmBody());
-        holder.bind(position, listener);
+        holder.mId.setText(String.valueOf(post.getmId()));
+        holder.mTitle.setText(post.getmTitle());
+        holder.mBody.setText(post.getmBody());
+        holder.bind(position, onItemClickListener);
     }
 
     @Override
@@ -44,23 +50,24 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         return mDataPost.size();
     }
 
+
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView id, title, body;
+        private TextView mId, mTitle, mBody;
 
-        public MyViewHolder(View view) {
+        private MyViewHolder(View view) {
             super(view);
-            id = view.findViewById(R.id.id);
-            title = view.findViewById(R.id.title);
-            body = view.findViewById(R.id.body);
+            mId = view.findViewById(R.id.id);
+            mTitle = view.findViewById(R.id.title);
+            mBody = view.findViewById(R.id.body);
         }
 
-        public void bind(final int position, final OnItemClickListener listener) {
+        private void bind(final int position, final OnItemClickListener listener) {
 
-            body.setOnClickListener(new View.OnClickListener() {
+            mBody.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     listener.onItemClick(position);

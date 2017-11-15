@@ -43,6 +43,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
         return mDataComment.size();
     }
 
+    public void onResult(ArrayList<Comment> comments) {
+        mDataComment.addAll(comments);
+        notifyDataSetChanged();
+    }
+
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView mId, mTitle, mBody;
 

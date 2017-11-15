@@ -5,6 +5,7 @@ package haythem.hd.callwsapp.utils;
  */
 
 public class Constantes {
+    public static final String LOG = "LOG";
     public static final String LOG_WEB_SERVICE = "TEST_WEB_SERVICE";
     public static final String URL_WS_POST = "https://jsonplaceholder.typicode.com/posts";
     public static final String URL_WS = "https://jsonplaceholder.typicode.com/";
