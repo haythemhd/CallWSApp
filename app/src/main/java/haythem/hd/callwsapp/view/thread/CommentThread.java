@@ -24,9 +24,9 @@ public class CommentThread extends Thread {
     private Handler mCommentHandler;
     private int mIdPost;
 
-    public CommentThread(Handler mCommentHandler, int id) {
-        this.mCommentHandler = mCommentHandler;
-        this.mIdPost = id;
+    public CommentThread(Handler commentHandler, int id) {
+        mCommentHandler = commentHandler;
+        mIdPost = id;
     }
 
     @Override

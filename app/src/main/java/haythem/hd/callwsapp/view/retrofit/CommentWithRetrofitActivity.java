@@ -23,6 +23,7 @@ public class CommentWithRetrofitActivity extends AppCompatActivity {
     private RecyclerView mRecycleView;
     private ArrayList<Comment> mCommentList = new ArrayList<>();
     private CommentAdapter mCommentAdapter;
+    private Call<ArrayList<Comment>> mCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,7 @@ public class CommentWithRetrofitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_posts_comment);
         mIdPost = getIntent().getIntExtra(Constantes.KEY_ID_POST, 0);
 
-        getSupportActionBar().setTitle("Comment With Retrofit");
+        getSupportActionBar().setTitle(R.string.comment_retro);
 
         mRecycleView = findViewById(R.id.recycleview_post);
         mRecycleView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -40,8 +41,8 @@ public class CommentWithRetrofitActivity extends AppCompatActivity {
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
 
-        Call<ArrayList<Comment>> call = apiService.getCommentById(mIdPost);
-        call.enqueue(new Callback<ArrayList<Comment>>() {
+        mCall = apiService.getCommentById(mIdPost);
+        mCall.enqueue(new Callback<ArrayList<Comment>>() {
             @Override
             public void onResponse(Call<ArrayList<Comment>> call, Response<ArrayList<Comment>> response) {
                 mCommentList.addAll(response.body());
@@ -54,5 +55,13 @@ public class CommentWithRetrofitActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        if (!mCall.isCanceled())
+            mCall.cancel();
+        super.onDestroy();
     }
 }

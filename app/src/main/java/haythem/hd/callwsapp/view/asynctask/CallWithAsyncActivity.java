@@ -29,20 +29,18 @@ public class CallWithAsyncActivity extends AppCompatActivity implements PostAdap
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posts_comment);
 
+        getSupportActionBar().setTitle(R.string.post_async);
+
         mRecycleView = findViewById(R.id.recycleview_post);
-
         mRecycleView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-        getSupportActionBar().setTitle("Posts With AsyncTask");
 
         mPostAdapter = new PostAdapter(mPostList, this);
         mRecycleView.setAdapter(mPostAdapter);
 
-        View view = getLayoutInflater().inflate(R.layout.progress, null);
-        mDialog = new AlertDialog.Builder(this).setView(view).create();
+        View progressView = getLayoutInflater().inflate(R.layout.progress, null);
+        mDialog = new AlertDialog.Builder(this).setView(progressView).create();
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         mDialog.setCancelable(false);
-        mDialog.show();
 
         postAsync = new PostAsync(this);
         postAsync.execute();

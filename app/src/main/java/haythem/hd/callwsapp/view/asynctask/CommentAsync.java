@@ -42,21 +42,7 @@ public class CommentAsync extends AsyncTask<Integer, Void, Object> {
         if (jsonStr != null) {
             try {
                 JSONArray posts = new JSONArray(jsonStr);
-
-                for (int i = 0; i < posts.length(); i++) {
-                    JSONObject jsonPostObject = posts.getJSONObject(i);
-
-                    int postId = jsonPostObject.getInt("postId");
-                    int id = jsonPostObject.getInt("id");
-                    String name = jsonPostObject.getString("name");
-                    String email = jsonPostObject.getString("email");
-                    String body = jsonPostObject.getString("body");
-
-                    Comment comment = new Comment(postId, id, name, email, body);
-
-                    mCommentList.add(comment);
-
-                }
+                getCommentArray(posts);
             } catch (final JSONException e) {
                 return e;
             }
@@ -73,6 +59,28 @@ public class CommentAsync extends AsyncTask<Integer, Void, Object> {
         } else {
             mListener.onSuccess((ArrayList<Comment>) result);
         }
+    }
+
+
+    private ArrayList<Object> getCommentArray(JSONArray posts) throws JSONException {
+        ArrayList<Object> mCommentList = new ArrayList<>();
+        for (int i = 0; i < posts.length(); i++) {
+            JSONObject jsonPostObject = posts.getJSONObject(i);
+
+            int postId = jsonPostObject.getInt("postId");
+            int id = jsonPostObject.getInt("id");
+            String name = jsonPostObject.getString("name");
+            String email = jsonPostObject.getString("email");
+            String body = jsonPostObject.getString("body");
+
+            Comment comment = new Comment(postId, id, name, email, body);
+
+            mCommentList.add(comment);
+        }
+        return mCommentList;
+    }
+    public void cancel() {
+        cancel(true);
     }
 }
 

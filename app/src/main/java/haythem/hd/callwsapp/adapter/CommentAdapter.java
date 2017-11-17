@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -15,7 +14,7 @@ import haythem.hd.callwsapp.model.Comment;
  * Created by Haythem on 09/11/2017.
  */
 
-public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHolder> {
+public class CommentAdapter extends RecyclerView.Adapter<ViewHolder> {
     private ArrayList<Comment> mDataComment;
 
     public CommentAdapter(ArrayList<Comment> myDataset) {
@@ -23,19 +22,19 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.row_post_item, parent, false);
-        return new MyViewHolder(itemView);
+        return new ViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         Comment comment = mDataComment.get(position);
-        holder.mId.setText(String.valueOf(comment.getmPostId()));
+        holder.setId(String.valueOf(comment.getPostId()));
         String title = comment.getmName() + " (" + comment.getmEmail() + ") " + comment.getmId();
-        holder.mTitle.setText(title);
-        holder.mBody.setText(comment.getmBody());
+        holder.setTitle(title);
+        holder.setBody(comment.getmBody());
     }
 
     @Override
@@ -46,17 +45,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.MyViewHo
     public void onResult(ArrayList<Comment> comments) {
         mDataComment.addAll(comments);
         notifyDataSetChanged();
-    }
-
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView mId, mTitle, mBody;
-
-        public MyViewHolder(View view) {
-            super(view);
-            mId = view.findViewById(R.id.id);
-            mTitle = view.findViewById(R.id.title);
-            mBody = view.findViewById(R.id.body);
-        }
     }
 
 }

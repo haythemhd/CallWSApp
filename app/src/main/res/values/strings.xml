@@ -3,4 +3,12 @@
     <string name="call_thread">Call With Thread</string>
     <string name="call_asynctask">Call With AsyncTask</string>
     <string name="call_with_retrofit">Call With Retrofit</string>
+    <string name="post_retrofit">Posts With Retrofit</string>
+    <string name="comment_retro">Comment With Retrofit</string>
+    <string name="posts_thread">Posts With Thread</string>
+    <string name="comment_thread">Comments</string>
+    <string name="post_async">Posts With AsyncTask</string>
+    <string name="problem_connexion">Connexion problem</string>
+    <string name="load_problem">Erreur lors de chargement</string>
+    <string name="nothing" />
 </resources>

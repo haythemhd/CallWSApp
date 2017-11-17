@@ -27,19 +27,19 @@ public class Comment {
     }
 
     public Comment(int mPostId, int mId, String mName, String mEmail, String mBody) {
-        this.mPostId = mPostId;
-        this.mId = mId;
-        this.mName = mName;
-        this.mEmail = mEmail;
-        this.mBody = mBody;
+        mPostId = mPostId;
+        mId = mId;
+        mName = mName;
+        mEmail = mEmail;
+        mBody = mBody;
     }
 
-    public int getmPostId() {
+    public int getPostId() {
         return mPostId;
     }
 
-    public void setmPostId(int mPostId) {
-        this.mPostId = mPostId;
+    public void setPostId(int postId) {
+        mPostId = postId;
     }
 
     public int getmId() {
@@ -47,7 +47,7 @@ public class Comment {
     }
 
     public void setmId(int mId) {
-        this.mId = mId;
+        mId = mId;
     }
 
     public String getmName() {
@@ -55,7 +55,7 @@ public class Comment {
     }
 
     public void setmName(String mName) {
-        this.mName = mName;
+        mName = mName;
     }
 
     public String getmEmail() {
@@ -63,7 +63,7 @@ public class Comment {
     }
 
     public void setmEmail(String mEmail) {
-        this.mEmail = mEmail;
+        mEmail = mEmail;
     }
 
     public String getmBody() {
@@ -71,6 +71,6 @@ public class Comment {
     }
 
     public void setmBody(String mBody) {
-        this.mBody = mBody;
+        mBody = mBody;
     }
 }

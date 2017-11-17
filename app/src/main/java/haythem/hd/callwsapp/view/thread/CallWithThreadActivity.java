@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +24,7 @@ public class CallWithThreadActivity extends AppCompatActivity implements PostAda
     private ArrayList<Post> mPostList = new ArrayList<>();
     private Handler mHandler;
     private PostAdapter mPostAdapter;
+    private PostThread mPostThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +34,24 @@ public class CallWithThreadActivity extends AppCompatActivity implements PostAda
         mRecycleView = findViewById(R.id.recycleview_post);
         mRecycleView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-        getSupportActionBar().setTitle("Posts With Thread");
+        getSupportActionBar().setTitle(R.string.posts_thread);
 
         mPostAdapter = new PostAdapter(mPostList, this);
         mRecycleView.setAdapter(mPostAdapter);
 
-        mHandler = new Handler(new Handler.Callback() {
+        mHandler = new Handler(Callback());
+
+        mPostThread = new PostThread(mHandler);
+
+        mPostThread.start();
+
+
+
+    }
+
+    @NonNull
+    private Handler.Callback Callback() {
+        return new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
                 Object list = (ArrayList<Object>) msg.obj;
@@ -48,14 +62,7 @@ public class CallWithThreadActivity extends AppCompatActivity implements PostAda
                     //mPostAdapter.notifyDataSetChanged();
                 }                return true;
             }
-        });
-
-        PostThread postThread = new PostThread(mHandler);
-
-        postThread.start();
-
-
-
+        };
     }
 
     @Override
@@ -74,4 +81,24 @@ public class CallWithThreadActivity extends AppCompatActivity implements PostAda
     public void onFail(Exception e) {
         Log.i(Constantes.LOG,"Erreur");
     }
+
+
+    @Override
+    protected void onStart() {
+        Log.e(Constantes.LOG,"OnStart");
+        super.onStart();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.e(Constantes.LOG,"OnPause");
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mHandler.removeCallbacksAndMessages(null);
+        super.onDestroy();
+    }
+
 }
